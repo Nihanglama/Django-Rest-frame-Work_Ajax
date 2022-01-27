@@ -12,6 +12,7 @@ def Apioverview(request):
         'create':'/Create_task/',
         'update/':'/task_update/<str:pk>/',
         'Delete/':'/task_delete/<str:pk>/',
+        'Search/':'/task_search',
     }
 
     return Response(api_urls)
@@ -21,6 +22,13 @@ def Task_list(request):
     task=Tasks.objects.all()
     serializer=Task_serilize(task,many=True)
 
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def Task_search(request,name):
+    task=Tasks.objects.filter(title__icontains=name)
+    print(task)
+    serializer=Task_serilize(task,many=True)
     return Response(serializer.data)
 
 
